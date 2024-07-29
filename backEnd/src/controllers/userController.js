@@ -40,7 +40,7 @@ const registration = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email,password);
+  console.log(email, password);
   if (!email || !password || email === "" || password === "") {
     res.status(400).json({
       status: "error",
@@ -75,7 +75,25 @@ const login = async (req, res) => {
   }
 };
 
+//get users
+
+const users = async (req, res) => {
+  const users = await User.find().select('-password');;
+  if (!users) {
+    res.status(404).json({
+      status: "error",
+      message: "Users not found",
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    message: "Users successfully fetched",
+    data:users
+  });
+};
+
 module.exports = {
   registration,
   login,
+  users
 };
